@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>점심 메뉴 월드컵</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --text2: #888;
+    --accent: #ff6b35;
+    --accent2: #ff9a6c;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  header h1 span {
+    color: var(--accent);
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: 6px;
+  }
+
+  .round-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 999px;
+    margin: 1.5rem 0 0.5rem;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 2rem;
+  }
+
+  .arena {
+    width: 100%;
+    max-width: 480px;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .matchup {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-btn {
+    flex: 1;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    border-radius: 16px;
+    padding: 28px 12px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    word-break: keep-all;
+    line-height: 1.4;
+  }
+
+  .menu-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+  }
+
+  .menu-btn:active {
+    transform: translateY(0);
+  }
+
+  .vs-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 1.2rem;
+  }
+
+  .survivors {
+    width: 100%;
+    max-width: 480px;
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  .survivors-title {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+
+  .survivor-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  /* Champion screen */
+  .champion-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    min-height: 60vh;
+  }
+
+  .trophy {
+    font-size: 72px;
+    animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .champion-name {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 1rem 0 0.5rem;
+    animation: slideUp 0.4s 0.2s both ease-out;
+  }
+
+  .champion-sub {
+    font-size: 16px;
+    color: var(--text2);
+    animation: slideUp 0.4s 0.35s both ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .restart-btn {
+    margin-top: 2.5rem;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text2);
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    animation: slideUp 0.4s 0.5s both ease-out;
+  }
+
+  .restart-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  footer {
+    padding: 2rem 0 1.5rem;
+    font-size: 12px;
+    color: #444;
+  }
+
+  @media (max-width: 400px) {
+    .menu-btn { font-size: 16px; padding: 22px 10px; }
+    .champion-name { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>점심 메뉴 <span>월드컵</span></h1>
+  <p>64강 토너먼트 — 오늘의 점심 챔피언을 찾아라</p>
+</header>
+
+<div id="app"></div>
+
+<footer>만든 이: 승호 &nbsp;·&nbsp; Powered by Claude</footer>
+
+<script>
+const ALL_MENUS = [
+  "김치찌개","된장찌개","순두부찌개","부대찌개","삼겹살","갈비탕","설렁탕","곰탕",
+  "냉면","비빔밥","돌솥비빔밥","제육볶음","불고기","닭갈비","오삼불고기","쭈꾸미볶음",
+  "떡볶이","순대국밥","해장국","감자탕","닭볶음탕","간장게장","꽃게찜","연어회",
+  "초밥","라멘","짜장면","짬뽕","볶음밥","탕수육","마파두부","훠궈",
+  "파스타","리조또","피자","버거","샌드위치","스테이크","타코","쌀국수",
+  "팟타이","초계국수","막국수","콩국수","칼국수","수제비","보쌈","족발",
+  "삼계탕","오리로스","오징어볶음","코다리조림","고등어구이","갈치조림","꽁치구이","황태해장국",
+  "마라탕","마라샹궈","순살치킨","양념치킨","피자헛","샤브샤브","수육국밥","두부김치"
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let menus, current, next, matchIdx, roundSize, done;
+
+function init() {
+  menus = shuffle(ALL_MENUS);
+  current = [...menus];
+  next = [];
+  matchIdx = 0;
+  roundSize = 64;
+  done = false;
+  render();
+}
+
+function getRoundName(n) {
+  const map = {64:"64강",32:"32강",16:"16강",8:"8강",4:"준결승",2:"결승"};
+  return map[n] || "챔피언";
+}
+
+function pick(winner) {
+  next.push(winner);
+  matchIdx++;
+  if (matchIdx * 2 >= current.length) {
+    if (next.length === 1) { done = true; }
+    else {
+      roundSize = next.length * 2;
+      current = [...next];
+      next = [];
+      matchIdx = 0;
+    }
+  }
+  render();
+}
+
+function render() {
+  const app = document.getElementById('app');
+
+  if (done) {
+    const champ = next[0];
+    app.innerHTML = `
+      <div class="champion-screen">
+        <div class="trophy">🏆</div>
+        <div class="champion-name">${champ}</div>
+        <div class="champion-sub">오늘의 점심 챔피언!</div>
+        <button class="restart-btn" onclick="init()">다시 하기</button>
+      </div>`;
+    return;
+  }
+
+  const m1 = current[matchIdx*2];
+  const m2 = current[matchIdx*2+1];
+  const total = current.length / 2;
+  const cur = matchIdx + 1;
+  const roundName = getRoundName(current.length);
+
+  app.innerHTML = `
+    <div class="arena">
+      <div class="round-badge">${roundName}</div>
+      <div class="progress-text">${cur} / ${total} 경기</div>
+      <div class="matchup">
+        <button class="menu-btn" onclick="pick('${m1}')">${m1}</button>
+        <span class="vs-label">VS</span>
+        <button class="menu-btn" onclick="pick('${m2}')">${m2}</button>
+      </div>
+      <div class="hint">더 먹고 싶은 메뉴를 선택하세요</div>
+    </div>
+    ${next.length > 0 ? `
+    <div class="survivors">
+      <div class="survivors-title">이번 라운드 통과 메뉴</div>
+      <div class="survivor-chips">${next.map(m=>`<span class="chip">${m}</span>`).join('')}</div>
+    </div>` : ''}`;
+}
+
+init();
+</script>
+</body>
+</html>
